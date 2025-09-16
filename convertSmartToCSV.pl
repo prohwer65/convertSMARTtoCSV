@@ -35,16 +35,28 @@ which is easily imported in Excel like applications.
 
 It parses the files in sections:  header, SATA ID#, etc. 
 
-Usage : $Script [-he [-w Z] [-d X] [-f N] 
+Usage : $Script <filenames>
 
     Options     : Descriptions
     --------      ------------------------------------------------------
     -h          : Help menu
-    -e          : Enable something
-    -D  debug   : Option with agrument
-    -w  win     : Option with agrument
     --help      : Help Menu
     --version   : Version 
+
+
+Example 1:
+  smartctl -a /dev/sda > before_smart.txt
+
+something happens
+
+  smartctl -a /dev/sda > after_smart.txt
+  convertSmartToCSV.pl before_smart.txt  after_smart.txt  > compareSmart.csv
+
+Example 2:
+# gather multiple SMART outputs from multple hosts to compare results. 
+#
+  convertSmartToCSV.pl  smart?.txt  > compareSmart.csv
+ 
 
 EOMESSAGE
 
@@ -273,7 +285,7 @@ sub outputHashtoCSV {
                     print ", ";
                 }
             } else {
-                print $id . ", ";
+                print "ID#" . $id . ", ";
             }
         }
         print "\n";
@@ -320,7 +332,7 @@ sub HELP_MESSAGE() {
 
     print <<EOTEXT;
 -----------------------------------------------------------------------------
-$Script - TITLE
+$Script - Convert SMART text files into Comma Seperated Values file. 
 $DOCUMENTATION
 
 $^X

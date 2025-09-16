@@ -92,6 +92,7 @@ sub passing_argu_4ormore;
 sub HELP_MESSAGE();
 sub VERSION_MESSAGE();
 
+sub parseSmartTable();
 # ------------------------------------------------------------------------------
 # global variables
 # ------------------------------------------------------------------------------
@@ -259,36 +260,37 @@ sub parseSmartTable() {
 
     my	$smartTable_file_name = '';		# input file name
 
+    my %smartData;
     open  my $smartTable, '<', $smartTable_file_name
         or die  "$0 : failed to open  input file '$smartTable_file_name' : $!\n";
 
     while ( <$smartTable> )  {
-        if ( $_ =~ /^Model Number:\s(1)/ ) then $modelNumber = $1;
-        if ( $_ =~ /^Device Model:\s(1)/ ) then $modelNumber = $1;
-        if ( $_ =~ /^Firmware Version:\s(1)/ ) then $firmwareVersion = $1;
-        if ( $_ =~ /^Serial Number:\s(1)/ ) then $serialNumber = $1;
-        if ( $_ =~ /^Total NVM Capacity:\s(1)/ ) then $capacity = $1;
-        if ( $_ =~ /^Total NVM Capacity:\s(1)/ ) then $capacity = $1;
+        if ( $_ =~ /^Model Number:\s*(\S)/ ) { $smartData{modelNumber} = $1;}
+        if ( $_ =~ /^Device Model:\s*(\S)/ ) { $smartData{modelNumber} = $1;}
+        if ( $_ =~ /^Firmware Version:\s*(\S)/ ) { $smartData{firmwareVersion} = $1;}
+        if ( $_ =~ /^Serial Number:\s*(\S)/ ) { $smartData{serialNumber} = $1;}
+        if ( $_ =~ /^Total NVM Capacity:\s*(\S)/ ) { $smartData{capacity} = $1;}
+        if ( $_ =~ /^Total NVM Capacity:\s*(\S)/ ) { $smartData{capacity} = $1;}
 
-        if ( $_ =~ /^Critical Warning:\s(1)/ ) then $zz $1;
-        if ( $_ =~ /^Temperature:\s(1)/ ) then $zz $1;
-        if ( $_ =~ /^Available Spare:\s(1)/ ) then $zz $1;
-        if ( $_ =~ /^Available Spare Threshold:\s(1)/ ) then $zz $1;
-        if ( $_ =~ /^Percentage Used:\s(1)/ ) then $zz $1;
-        if ( $_ =~ /^Data Units Read:\s(1)/ ) then $zz $1;
-        if ( $_ =~ /^Data Units Written:\s(1)/ ) then $zz $1;
-        if ( $_ =~ /^Host Read Commands:\s(1)/ ) then $zz $1;
-        if ( $_ =~ /^Host Write Commands:\s(1)/ ) then $zz $1;
-        if ( $_ =~ /^Controller Busy Time:\s(1)/ ) then $zz $1;
-        if ( $_ =~ /^Power Cycles:\s(1)/ ) then $zz $1;
-        if ( $_ =~ /^Power On Hours:\s(1)/ ) then $zz $1;
-        if ( $_ =~ /^Unsafe Shutdowns:\s(1)/ ) then $zz $1;
-        if ( $_ =~ /^Media and Data Integrity Errors:\s(1)/ ) then $zz $1;
-        if ( $_ =~ /^Error Information Log Entries:\s(1)/ ) then $zz $1;
-        if ( $_ =~ /^Warning  Comp. Temperature Time:\s(1)/ ) then $zz $1;
-        if ( $_ =~ /^Critical Comp. Temperature Time:\s(1)/ ) then $zz $1;
-        if ( $_ =~ /^Temperature Sensor 1:\s(1)/ ) then $zz $1;
-        if ( $_ =~ /^Temperature Sensor 2:\s(1)/ ) then $zz $1;
+        if ( $_ =~ /^Critical Warning:\s*(\S)/ ) { $smartData{zz} = $1;}
+        if ( $_ =~ /^Temperature:\s*(\S)/ ) { $smartData{zz} = $1;}
+        if ( $_ =~ /^Available Spare:\s*(\S)/ ) { $smartData{zz} = $1;}
+        if ( $_ =~ /^Available Spare Threshold:\s*(\S)/ ) { $smartData{zz} = $1;}
+        if ( $_ =~ /^Percentage Used:\s*(\S)/ ) { $smartData{zz} = $1;}
+        if ( $_ =~ /^Data Units Read:\s*(\S)/ ) { $smartData{zz} = $1;}
+        if ( $_ =~ /^Data Units Written:\s*(\S)/ ) { $smartData{zz} = $1;}
+        if ( $_ =~ /^Host Read Commands:\s*(\S)/ ) { $smartData{zz} = $1;}
+        if ( $_ =~ /^Host Write Commands:\s*(\S)/ ) { $smartData{zz} = $1;}
+        if ( $_ =~ /^Controller Busy Time:\s*(\S)/ ) { $smartData{zz} = $1;}
+        if ( $_ =~ /^Power Cycles:\s*(\S)/ ) { $smartData{zz} = $1;}
+        if ( $_ =~ /^Power On Hours:\s*(\S)/ ) { $smartData{zz} = $1;}
+        if ( $_ =~ /^Unsafe Shutdowns:\s*(\S)/ ) { $smartData{zz} = $1;}
+        if ( $_ =~ /^Media and Data Integrity Errors:\s*(\S)/ ) { $smartData{zz} = $1;}
+        if ( $_ =~ /^Error Information Log Entries:\s*(\S)/ ) { $smartData{zz} = $1;}
+        if ( $_ =~ /^Warning  Comp. Temperature Time:\s*(\S)/ ) { $smartData{zz} = $1;}
+        if ( $_ =~ /^Critical Comp. Temperature Time:\s*(\S)/ ) { $smartData{zz} = $1;}
+        if ( $_ =~ /^Temperature Sensor 1:\s*(\S)/ ) { $smartData{zz} = $1;}
+        if ( $_ =~ /^Temperature Sensor 2:\s*(\S)/ ) { $smartData{zz} = $1;}
 
     }
     
@@ -296,10 +298,6 @@ sub parseSmartTable() {
     close  $smartTable
         or warn "$0 : failed to close input file '$smartTable_file_name' : $!\n";
 
-    my $filecontent	= do{
-        local  $/  = undef;                 # input record separator undefined
-        <$INFILE>
-    };
 }
 ##################################################################
 #                                                                #
