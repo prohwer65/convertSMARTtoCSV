@@ -9,3 +9,16 @@ Usage: convertSmartToCSV.pl   (smart text files)     > smartTables.csv
 then smartTables.csv can be used by any spreadsheet program like Excel or gnumeric. 
 
 
+# Example 1:
+  smartctl -a /dev/sda > before_smart.txt
+
+something happens
+
+  smartctl -a /dev/sda > after_smart.txt
+  convertSmartToCSV.pl before_smart.txt  after_smart.txt  > compareSmart.csv
+
+# Example 2:
+  gather multiple SMART outputs from multple hosts to compare results. 
+
+  convertSmartToCSV.pl  smart?.txt  > compareSmart.csv
+ 
