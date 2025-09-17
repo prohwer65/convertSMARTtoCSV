@@ -25,7 +25,7 @@ use FindBin qw{$Script };
 use lib qw/local.lib/;
 
 #use FindBin qw{$Bin $Script $RealBin $RealScript $Dir $RealDir};
-use SMART;
+#use SMART;
 
 my $VERSION = '';
 
