@@ -24,6 +24,8 @@ use utf8;
 use FindBin qw{$Script };
 use lib qw/local.lib/;
 
+use drivedbatp2259;
+
 #use FindBin qw{$Bin $Script $RealBin $RealScript $Dir $RealDir};
 #use SMART;
 
@@ -183,11 +185,11 @@ foreach my $filename (@ARGV) {
 
 
                 chomp $line;
-                if ( $line =~ /(\w+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S)\s+(\d+)/ ) {
-                    if ($DEBUG) { print "Parsing:  " . $line . "\n"; }
+                if ( $line =~ /(\w+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S)\s+(\S+)/ ) {
+                    if ($DEBUG) { print "Parsing1:" . $line . "\n"; }
                     my $id = $1;
 
-                    $smartValues{$filename}{$id}{attr}        = $2;
+                    $smartValues{$filename}{$id}{attr}        = checkIDattr( $1, $2);
                     $smartValues{$filename}{$id}{flag}        = $3;
                     $smartValues{$filename}{$id}{value}       = $4;
                     $smartValues{$filename}{$id}{worst}       = $5;
@@ -205,7 +207,33 @@ foreach my $filename (@ARGV) {
                         print "\n";
                     }
 
+                } elsif ( $line =~ /(\w+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S)\s+(\S+)/ ) {
+                    if ($DEBUG) { print "Parsing2:" . $line . "\n"; }
+                    my $id = $1;
+
+                    $smartValues{$filename}{$id}{attr}        = checkIDattr( $1, $2);
+                    $smartValues{$filename}{$id}{flag}        = $3;
+                    $smartValues{$filename}{$id}{value}       = $4;
+                    $smartValues{$filename}{$id}{worst}       = $5;
+                    $smartValues{$filename}{$id}{thresh}      = $6;
+                    #$smartValues{$filename}{$id}{type}        = $7;
+                    #$smartValues{$filename}{$id}{update}      = $8;
+                    $smartValues{$filename}{$id}{when_failed} = $7;
+                    $smartValues{$filename}{$id}{raw_value}   = $8;
+
+                    if ($DEBUG) {
+                        print $id . ":  ";
+                        foreach my $key (qw/ attr type raw_value /) {
+                            print uc($key) . ": " . $smartValues{$filename}{$id}{$key} . "; ";
+                        }
+                        print "\n";
+                    }
+                } else {
+                    if ($DEBUG) {
+                        print "Skipping " . $line ."\n";
+                    }
                 }
+
             }    # foundID ==1
 
         }    # while <>
